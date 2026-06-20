@@ -1165,13 +1165,13 @@
           <span class="opt-icon">📚</span>매일 힘들게 공부했더니 시험에서 좋은 점수를 받았다.
         </div>
         <div class="situation-option" id="sq1" onclick="pickSituation(1)">
-          <span class="opt-icon">😴</span>일요일에 늦잠을 잤다.
+          <span class="opt-icon">🎮</span>친구의 게임기를 보니 나도 갖고 싶은 마음이 들었다.
         </div>
         <div class="situation-option" id="sq2" onclick="pickSituation(2)">
           <span class="opt-icon">⚽</span>매일 열심히 연습했더니 축구 경기에서 골을 넣었다.
         </div>
         <div class="situation-option" id="sq3" onclick="pickSituation(3)">
-          <span class="opt-icon">🍎</span>사과를 한 개 먹었다.
+          <span class="opt-icon">🍕</span>"오늘 숙제 다 했어?" 물었는데 "저녁 메뉴는 피자예요!"라고 답했다.
         </div>
       </div>
       <div class="result-msg" id="sqResult"></div>
@@ -2123,8 +2123,7 @@ const storyScript = [
   { type: 'narr',   text: '마을 어른이 미소를 지으며 말했어요.' },
   { type: 'speech', text: '처음에는 힘들고 쓴맛이 났지만, 결국 달콤한 결과가 찾아왔구나!' },
 
-  { type: 'narr',   text: '괴로움이 다하면 즐거움이 온다는 뜻이에요.' },
-  { type: 'narr',   text: '이것이 바로 고진감래예요!' },
+  { type: 'narr',   text: '고진감래란, 괴로움이 다하면 즐거움이 온다는 뜻이에요.' },
 ];
 
 function getVoices() {
@@ -2176,7 +2175,7 @@ async function toggleTTS() {
       if (speechVoice) utter.voice = speechVoice;
       else if (narrVoice) utter.voice = narrVoice;
     }
-    const pauseAfter = [1, 3, 4, 6, 9, 11];
+    const pauseAfter = [1, 3, 4, 6, 9, 11, 12];
     utter.onend = () => {
       ttsCurrentIdx++;
       setTimeout(speakNext, pauseAfter.includes(ttsCurrentIdx - 1) ? 500 : 150);
