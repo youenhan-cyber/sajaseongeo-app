@@ -905,16 +905,28 @@
   .ext-opt.revealed-wrong { border-color: #E05555; background: var(--error-bg); color: #C03030; }
   .ext-opt.disabled { pointer-events: none; }
   .ext-feedback {
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+    max-height: 220px;
+    overflow-y: auto;
+    margin-top: 4px;
+  }
+  .ext-feedback.show { display: flex; }
+  .ext-feedback-line {
     font-size: 13px;
     font-weight: 600;
     padding: 8px 12px;
     border-radius: 8px;
-    display: none;
     line-height: 1.5;
+    animation: feedbackPop 0.25s ease;
   }
-  .ext-feedback.show { display: block; }
-  .ext-feedback.ok { background: var(--success-bg); color: #1E3A5F; }
-  .ext-feedback.hint { background: #E8F5FF; color: var(--primary); }
+  @keyframes feedbackPop {
+    from { opacity: 0; transform: translateY(-4px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .ext-feedback-line.ok   { background: var(--success-bg); color: #1E3A5F; }
+  .ext-feedback-line.no   { background: #E8F5FF; color: var(--primary); }
   .ext-divider {
     height: 1px;
     background: var(--border);
@@ -1213,9 +1225,9 @@
       </div>
       <div style="font-size:13px; color:var(--muted); margin-bottom:10px;">다음 중 見(견)이 <b>"보다"</b> 뜻으로 쓰인 단어를 모두 고르세요.</div>
       <div class="ext-options">
-        <div class="ext-opt" id="eo0-0" onclick="pickExt(0,0,true,'발견(發見) — 새로운 것을 보아 찾아낸다는 뜻이에요!')">발견</div>
+        <div class="ext-opt" id="eo0-0" onclick="pickExt(0,0,true,'발견의 뜻은 새로운 것을 찾아낸다는 뜻으로, 견(見)은 여기서도 보다라는 뜻이에요!')">발견</div>
         <div class="ext-opt" id="eo0-1" onclick="pickExt(0,1,false,'애견의 견은 개 견(犬), 즉 강아지라는 뜻이에요. 볼 견(見)이 아니에요!')">애견</div>
-        <div class="ext-opt" id="eo0-2" onclick="pickExt(0,2,true,'의견(意見) — 생각을 본다, 즉 나의 생각을 나타낸다는 뜻이에요!')">의견</div>
+        <div class="ext-opt" id="eo0-2" onclick="pickExt(0,2,true,'의견의 뜻은 나의 생각을 나타낸다는 뜻으로, 견(見)은 여기서 생각을 본다는 의미로 쓰였어요!')">의견</div>
         <div class="ext-opt" id="eo0-3" onclick="pickExt(0,3,false,'견공의 견도 개 견(犬), 즉 강아지라는 뜻이에요. 볼 견(見)이 아니에요!')">견공</div>
       </div>
       <div class="ext-feedback" id="ef0"></div>
@@ -1232,10 +1244,10 @@
       </div>
       <div style="font-size:13px; color:var(--muted); margin-bottom:10px;">다음 중 物(물)이 <b>"물건·만물"</b> 뜻으로 쓰인 단어를 모두 고르세요.</div>
       <div class="ext-options">
-        <div class="ext-opt" id="eo1-0" onclick="pickExt(1,0,true,'동물(動物) — 움직이는 생물, 物이 생물·존재의 뜻으로 쓰였어요!')">동물</div>
+        <div class="ext-opt" id="eo1-0" onclick="pickExt(1,0,true,'동물의 뜻은 움직이는 생물로, 물(物)은 여기서 생물·존재라는 뜻으로 쓰였어요!')">동물</div>
         <div class="ext-opt" id="eo1-1" onclick="pickExt(1,1,false,'물가(강가)의 물은 물 수(水), 즉 강물이라는 뜻이에요. 물건 물(物)이 아니에요!')">물가(강가)</div>
-        <div class="ext-opt" id="eo1-2" onclick="pickExt(1,2,true,'식물(植物) — 심어진 존재, 物이 생물의 뜻으로 쓰였어요!')">식물</div>
-        <div class="ext-opt" id="eo1-3" onclick="pickExt(1,3,true,'물건(物件) — 物 자체가 물건이라는 뜻이에요!')">물건</div>
+        <div class="ext-opt" id="eo1-2" onclick="pickExt(1,2,true,'식물의 뜻은 땅에 심어진 생물로, 물(物)은 여기서도 생물·존재라는 뜻으로 쓰였어요!')">식물</div>
+        <div class="ext-opt" id="eo1-3" onclick="pickExt(1,3,true,'물건의 뜻은 物 자체와 같아요. 물(物)이 바로 물건이라는 뜻이에요!')">물건</div>
       </div>
       <div class="ext-feedback" id="ef1"></div>
     </div>
@@ -1251,9 +1263,9 @@
       </div>
       <div style="font-size:13px; color:var(--muted); margin-bottom:10px;">다음 중 生(생)이 <b>"생기다·태어나다"</b> 뜻으로 쓰인 단어를 모두 고르세요.</div>
       <div class="ext-options">
-        <div class="ext-opt" id="eo2-0" onclick="pickExt(2,0,true,'생일(生日) — 태어난 날이라는 뜻이에요!')">생일</div>
+        <div class="ext-opt" id="eo2-0" onclick="pickExt(2,0,true,'생일의 뜻은 태어난 날로, 생(生)은 태어나다·생기다라는 뜻이에요!')">생일</div>
         <div class="ext-opt" id="eo2-1" onclick="pickExt(2,1,false,'생선의 생(生)은 같은 한자지만 날것·신선하다는 뜻으로 쓰였어요. 생기다가 아니에요!')">생선</div>
-        <div class="ext-opt" id="eo2-2" onclick="pickExt(2,2,true,'탄생(誕生) — 태어나다는 뜻이에요!')">탄생</div>
+        <div class="ext-opt" id="eo2-2" onclick="pickExt(2,2,true,'탄생의 뜻은 태어나다로, 생(生)은 여기서도 태어나다·생기다라는 뜻이에요!')">탄생</div>
         <div class="ext-opt" id="eo2-3" onclick="pickExt(2,3,false,'생생하다의 생(生)도 같은 한자지만 살아있다·싱싱하다는 뜻으로 쓰였어요. 생기다가 아니에요!')">생생하다</div>
       </div>
       <div class="ext-feedback" id="ef2"></div>
@@ -1270,10 +1282,10 @@
       </div>
       <div style="font-size:13px; color:var(--muted); margin-bottom:10px;">다음 중 心(심)이 <b>"마음"</b> 뜻으로 쓰인 단어를 모두 고르세요.</div>
       <div class="ext-options">
-        <div class="ext-opt" id="eo3-0" onclick="pickExt(3,0,true,'관심(關心) — 어떤 것에 마음이 끌린다는 뜻이에요!')">관심</div>
+        <div class="ext-opt" id="eo3-0" onclick="pickExt(3,0,true,'관심의 뜻은 마음이 끌린다는 뜻으로, 심(心)은 마음이라는 뜻이에요!')">관심</div>
         <div class="ext-opt" id="eo3-1" onclick="pickExt(3,1,false,'심호흡의 심은 깊을 심(深), 즉 깊다는 뜻이에요. 마음 심(心)이 아니에요!')">심호흡</div>
-        <div class="ext-opt" id="eo3-2" onclick="pickExt(3,2,true,'안심(安心) — 마음이 편안하다는 뜻이에요!')">안심</div>
-        <div class="ext-opt" id="eo3-3" onclick="pickExt(3,3,true,'호기심(好奇心) — 신기한 것을 좋아하는 마음이에요!')">호기심</div>
+        <div class="ext-opt" id="eo3-2" onclick="pickExt(3,2,true,'안심의 뜻은 마음이 편안하다는 뜻으로, 심(心)은 여기서도 마음이라는 뜻이에요!')">안심</div>
+        <div class="ext-opt" id="eo3-3" onclick="pickExt(3,3,true,'호기심의 뜻은 신기한 것을 좋아하는 마음으로, 심(心)은 여기서도 마음이라는 뜻이에요!')">호기심</div>
       </div>
       <div class="ext-feedback" id="ef3"></div>
     </div>
@@ -1775,6 +1787,20 @@ const extSelected = [[], [], [], []];
 const extDone = [false, false, false, false];
 let extDoneCount = 0;
 
+// ── 5단계 피드백 누적 표시 (지워지지 않고 차곡차곡 쌓임) ──
+function addFeedbackLine(secIdx, text, type) {
+  const fb = document.getElementById(`ef${secIdx}`);
+  fb.classList.add('show');
+
+  const line = document.createElement('div');
+  line.className = 'ext-feedback-line ' + (type === 'ok' ? 'ok' : 'no');
+  line.textContent = text;
+
+  fb.appendChild(line);
+  // 스크롤을 최신 줄로
+  fb.scrollTop = fb.scrollHeight;
+}
+
 function pickExt(secIdx, optIdx, isCorrect, hint) {
   const el = document.getElementById(`eo${secIdx}-${optIdx}`);
 
@@ -1785,9 +1811,7 @@ function pickExt(secIdx, optIdx, isCorrect, hint) {
   if (!isCorrect) {
     wrongCount++; // 오답 카운트
     el.classList.add('revealed-wrong');
-    const fb = document.getElementById(`ef${secIdx}`);
-    fb.textContent = '❌ ' + hint;
-    fb.className = 'ext-feedback show hint';
+    addFeedbackLine(secIdx, '❌ ' + hint, 'no');
     if (window.speechSynthesis) {
       window.speechSynthesis.cancel();
       const utter = new SpeechSynthesisUtterance(hint);
@@ -1819,9 +1843,7 @@ function pickExt(secIdx, optIdx, isCorrect, hint) {
   // 정답 선택 시 — TTS 없이 조용히 확정
   el.classList.remove('selected');
   el.classList.add('revealed-correct', 'disabled');
-  const fb = document.getElementById(`ef${secIdx}`);
-  fb.textContent = '✅ ' + hint;
-  fb.className = 'ext-feedback show ok';
+  addFeedbackLine(secIdx, '✅ 맞아요! ' + hint, 'ok');
 
   // 이 섹션의 정답을 모두 골랐는지 확인
   const correctSet = extCorrect[secIdx];
