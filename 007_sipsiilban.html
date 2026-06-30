@@ -900,6 +900,120 @@
     color: var(--text);
     line-height: 1.6;
   }
+
+  /* ── 📖 한자 상식 카드 ── */
+  .hanja-trivia {
+    background: linear-gradient(135deg, #FFF8E8, #FFF0D0);
+    border: 1.5px dashed #E8A020;
+    border-radius: 14px;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* ── 한자 상식: 닫힘(안내문구) 영역 ── */
+  .trivia-prompt {
+    padding: 16px 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background 0.2s;
+  }
+  .trivia-prompt:active { background: rgba(232,160,32,0.12); }
+  .trivia-prompt-icon { font-size: 22px; flex-shrink: 0; }
+  .trivia-prompt-text {
+    font-size: 13px;
+    line-height: 1.55;
+    font-weight: 600;
+    color: var(--text);
+    flex: 1;
+  }
+  .trivia-prompt-text b { color: #8A6500; }
+  .trivia-prompt-cta {
+    font-size: 12px;
+    font-weight: 900;
+    color: #8A6500;
+    background: white;
+    border: 1.5px solid #E8A020;
+    border-radius: 20px;
+    padding: 6px 12px;
+    flex-shrink: 0;
+    white-space: nowrap;
+    animation: ctaPulse 1.6s infinite;
+  }
+  @keyframes ctaPulse {
+    0%,100% { transform: scale(1); }
+    50% { transform: scale(1.06); }
+  }
+
+  /* ── 한자 상식: 펼침(실제 내용) 영역 ── */
+  .trivia-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+  }
+  .hanja-trivia.expanded .trivia-content {
+    max-height: 400px;
+  }
+  .hanja-trivia.expanded .trivia-prompt {
+    display: none;
+  }
+  .trivia-content-inner {
+    padding: 4px 18px 16px;
+    cursor: pointer;
+    position: relative;
+  }
+  .hanja-trivia:active { background: linear-gradient(135deg, #FFF0D0, #FFE8B8); }
+  .hanja-trivia-title {
+    font-size: 12px;
+    font-weight: 900;
+    color: #8A6500;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .hanja-trivia-meaning {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .hanja-trivia-meaning b { color: #8A6500; }
+  .hanja-trivia-desc {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+  .hanja-trivia-words {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .hanja-trivia-word {
+    background: white;
+    border: 1.5px solid #F0D090;
+    border-radius: 8px;
+    padding: 5px 12px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #8A6500;
+  }
+  .note-speak-icon {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 16px;
+    opacity: 0.7;
+  }
+  .hanja-trivia.speaking .note-speak-icon { opacity: 1; animation: noteSpeakPulse 0.8s infinite; }
+  @keyframes noteSpeakPulse {
+    0%,100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+  }
   .ext-badge {
     margin-left: auto;
     font-size: 12px;
@@ -1253,32 +1367,49 @@
       <div class="ext-header">
         <span class="ext-hanja">十</span>
         <span class="ext-eq">십 = <b>열</b></span>
-        <span class="ext-badge" id="extBadge0"></span>
+        <span class="ext-badge done" id="extBadge0">완료 ✓</span>
       </div>
-      <div style="font-size:13px; color:var(--muted); margin-bottom:10px;">다음 중 十(십)이 <b>"열"</b> 뜻으로 쓰인 단어를 모두 고르세요.</div>
-      <div class="ext-options">
-        <div class="ext-opt" id="eo0-0" onclick="pickExt(0,0,true,'십중팔구의 뜻은 열 가운데 여덜아홉이라는 뜻으로, 십(十)은 여기서도 열이라는 뜻이에요!')">십중팔구</div>
-        <div class="ext-opt" id="eo0-1" onclick="pickExt(0,1,true,'십 년의 뜻은 열 해라는 뜻으로, 십(十)은 열이라는 뜻이에요!')">십 년</div>
-        <div class="ext-opt" id="eo0-2" onclick="pickExt(0,2,true,'십계명의 뜻은 열 가지 계명이라는 뜻으로, 십(十)은 여기서도 열이라는 뜻이에요!')">십계명</div>
-        <div class="ext-opt" id="eo0-3" onclick="pickExt(0,3,false,'심심하다의 심은 한자가 아니라 순우리말이에요. 열 십(十)이 아니에요!')">심심하다</div>
+      <div class="hanja-trivia" id="trivia0">
+        <div class="trivia-prompt" onclick="toggleTrivia('trivia0')">
+          <span class="trivia-prompt-icon">📖</span>
+          <span class="trivia-prompt-text">이번 한자는 <b>헷갈리는 한자가 거의 없어요!</b> 그래서 퀴즈 대신 한자 상식으로 알아볼게요.</span>
+          <span class="trivia-prompt-cta">눌러보기</span>
+        </div>
+        <div class="trivia-content">
+          <div class="trivia-content-inner" onclick="speakNote(this)">
+            <div class="hanja-trivia-title">📖 한자 상식</div>
+            <div class="hanja-trivia-meaning">十(십) — 뜻: <b>열</b></div>
+            <div class="hanja-trivia-desc">💡 十(열 십)은 숫자 10을 가리키는 한자예요. 어디서나 같은 뜻으로 쓰여요.</div>
+            <div class="hanja-trivia-words">
+              <span class="hanja-trivia-word">십중팔구</span>
+              <span class="hanja-trivia-word">십 년</span>
+              <span class="hanja-trivia-word">십계명</span>
+              <span class="hanja-trivia-word">십시일반</span>
+            </div>
+            <span class="note-speak-icon">🔊</span>
+          </div>
+        </div>
       </div>
       <div class="ext-feedback" id="ef0"></div>
     </div>
 
     <div class="ext-divider"></div>
 
-    <!-- 匙(시) = 숟가락 (특별 한자 — 퀴즈 대신 안내) -->
+    <!-- 匙(시) = 숟가락 -->
     <div class="ext-section" id="ext1">
       <div class="ext-header">
         <span class="ext-hanja">匙</span>
         <span class="ext-eq">시 = <b>숟가락</b></span>
-        <span class="ext-badge done" id="extBadge1">완료 ✓</span>
+        <span class="ext-badge" id="extBadge1"></span>
       </div>
-      <div class="ext-special-note">
-        💡 匙(시)는 일상에서 거의 쓰이지 않아요.<br>
-        '<b>십시일반</b>'이라는 사자성어에서만 쓰이는 특별한 한자예요!<br>
-        다른 단어를 찾기 어렵답니다. 😊
+      <div style="font-size:13px; color:var(--muted); margin-bottom:10px;">다음 중 匙(시)가 <b>"숟가락"</b> 뜻으로 쓰인 단어를 모두 고르세요.</div>
+      <div class="ext-options">
+        <div class="ext-opt" id="eo1-0" onclick="pickExt(1,0,true,'십시일반의 뜻은 열 사람이 한 숟가락씩 보탠다는 뜻으로, 시(匙)는 숟가락이라는 뜻이에요!')">십시일반</div>
+        <div class="ext-opt" id="eo1-1" onclick="pickExt(1,1,false,'시간의 시(時)는 때라는 뜻이에요. 숟가락 시(匙)가 아니에요!')">시간</div>
+        <div class="ext-opt" id="eo1-2" onclick="pickExt(1,2,false,'시력의 시(視)는 본다는 뜻이에요. 숟가락 시(匙)가 아니에요!')">시력</div>
+        <div class="ext-opt" id="eo1-3" onclick="pickExt(1,3,false,'시도의 시(試)는 시험한다는 뜻이에요. 숟가락 시(匙)가 아니에요!')">시도</div>
       </div>
+      <div class="ext-feedback" id="ef1"></div>
     </div>
 
     <div class="ext-divider"></div>
@@ -1351,7 +1482,7 @@
         <div class="hanja-card-char">匙</div>
         <div class="hanja-card-info">
           <div class="hanja-card-sound">시 · 숟가락</div>
-          <div class="hanja-card-words">수저 · 찻숟가락</div>
+          <div class="hanja-card-words">십시일반 (유일한 단어!)</div>
         </div>
         <div class="card-new-badge">NEW</div>
       </div>
@@ -1666,6 +1797,48 @@ document.querySelectorAll('.drop-slot').forEach(slot => {
 
 }); // end window.load
 
+// ── 어휘 확장 한자 상식 카드 클릭 시 읽어주기 ──
+function toggleTrivia(id) {
+  const card = document.getElementById(id);
+  if (!card) return;
+  card.classList.add('expanded');
+}
+
+async function speakNote(el) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  document.querySelectorAll('.hanja-trivia.speaking').forEach(n => n.classList.remove('speaking'));
+
+  const clone = el.cloneNode(true);
+  const iconEl = clone.querySelector('.note-speak-icon');
+  if (iconEl) iconEl.remove();
+  let text = clone.textContent.replace(/\s+/g, ' ').trim();
+  text = text.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/gu, '').replace(/\s+/g, ' ').trim();
+
+  el.classList.add('speaking');
+
+  let voices = window.speechSynthesis.getVoices();
+  if (voices.length === 0) {
+    await new Promise(resolve => {
+      window.speechSynthesis.onvoiceschanged = () => resolve();
+      setTimeout(resolve, 300);
+    });
+    voices = window.speechSynthesis.getVoices();
+  }
+  const koVoices = voices.filter(v => /ko|kr/i.test(v.lang));
+  const narrVoice = koVoices.find(v => /female|yuna|sora|미|여|나|지윤/i.test(v.name)) || koVoices[0] || null;
+
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = 'ko-KR';
+  utter.rate = 0.92;
+  utter.pitch = 1.05;
+  if (narrVoice) utter.voice = narrVoice;
+  utter.onend = () => el.classList.remove('speaking');
+  utter.onerror = () => el.classList.remove('speaking');
+
+  window.speechSynthesis.speak(utter);
+}
+
 function checkP1() {
   const correct = slots[0]==='십' && slots[1]==='시' && slots[2]==='일' && slots[3]==='반';
   if (correct) {
@@ -1807,13 +1980,13 @@ function pickSituation(idx) {
 // ── 페이지 5: 어휘 확장 ──
 // 각 섹션별 정답 인덱스
 const extCorrect = [
-  [0, 1, 2],    // 十: 십중팔구, 십 년, 십계명
-  [0, 2],       // 匙: 수저, 찻숟가락
+  [],           // 十: 한자 상식, 퀴즈 없음
+  [0],          // 匙: 십시일반
   [1, 2],       // 一: 일등, 통일
   [1, 2]        // 飯: 백반, 잔반
 ];
 const extSelected = [[], [], [], []];
-const extDone = [false, true, false, false]; // 匙(1번)는 특별 한자라 처음부터 완료 처리
+const extDone = [true, false, false, false]; // 十(0번)은 한자 상식이라 처음부터 완료 처리
 let extDoneCount = 1;
 
 // ── 5단계 피드백 누적 표시 (지워지지 않고 차곡차곡 쌓임) ──
