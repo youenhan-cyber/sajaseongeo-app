@@ -891,6 +891,99 @@
     font-size: 15px;
     color: var(--text);
   }
+  /* ── 📖 한자 상식 카드 ── */
+  .hanja-trivia {
+    background: linear-gradient(135deg, #FFF8E8, #FFF0D0);
+    border: 1.5px dashed #E8A020;
+    border-radius: 14px;
+    padding: 16px 18px;
+    position: relative;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  /* ── 한자 상식 첫 등장 안내 토스트 ── */
+  .trivia-toast {
+    position: fixed;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-20px);
+    max-width: 480px;
+    width: calc(100% - 32px);
+    background: linear-gradient(135deg, #3A2F1A, #2A2210);
+    color: white;
+    padding: 14px 18px;
+    border-radius: 14px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    z-index: 999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s, transform 0.35s;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .trivia-toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  .trivia-toast-icon { font-size: 20px; flex-shrink: 0; }
+  .trivia-toast-text {
+    font-size: 13px;
+    line-height: 1.55;
+    font-weight: 600;
+  }
+  .trivia-toast-text b { color: #FFD27A; }
+  .hanja-trivia:active { background: linear-gradient(135deg, #FFF0D0, #FFE8B8); }
+  .hanja-trivia-title {
+    font-size: 12px;
+    font-weight: 900;
+    color: #8A6500;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .hanja-trivia-meaning {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .hanja-trivia-meaning b { color: #8A6500; }
+  .hanja-trivia-desc {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+  .hanja-trivia-words {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .hanja-trivia-word {
+    background: white;
+    border: 1.5px solid #F0D090;
+    border-radius: 8px;
+    padding: 5px 12px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #8A6500;
+  }
+  .note-speak-icon {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 16px;
+    opacity: 0.7;
+  }
+  .hanja-trivia.speaking .note-speak-icon { opacity: 1; animation: noteSpeakPulse 0.8s infinite; }
+  @keyframes noteSpeakPulse {
+    0%,100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+  }
   .ext-badge {
     margin-left: auto;
     font-size: 12px;
@@ -956,6 +1049,11 @@
 </style>
 </head>
 <body>
+
+<div class="trivia-toast" id="triviaToast">
+  <span class="trivia-toast-icon">📖</span>
+  <span class="trivia-toast-text">이번 한자는 <b>헷갈리는 한자가 거의 없어요!</b><br>그래서 퀴즈 대신 한자 상식으로 알아볼게요.</span>
+</div>
 
 <header>
   <div class="label">오늘의 사자성어</div>
@@ -1266,10 +1364,10 @@
       </div>
       <div style="font-size:13px; color:var(--muted); margin-bottom:10px;">다음 중 盡(진)이 <b>"다하다"</b> 뜻으로 쓰인 단어를 모두 고르세요.</div>
       <div class="ext-options">
-        <div class="ext-opt" id="eo1-0" onclick="pickExt(1,0,false,'진짜의 진(眞)은 참되다는 뜻이에요. 다할 진(盡)이 아니에요!')">진짜</div>
-        <div class="ext-opt" id="eo1-1" onclick="pickExt(1,1,true,'기진맥진의 뜻은 기운이 다 빠진다는 뜻으로, 진(盡)은 다하다라는 뜻이에요!')">기진맥진</div>
-        <div class="ext-opt" id="eo1-2" onclick="pickExt(1,2,false,'진학의 진(進)은 나아간다는 뜻이에요. 다할 진(盡)이 아니에요!')">진학</div>
-        <div class="ext-opt" id="eo1-3" onclick="pickExt(1,3,true,'소진의 뜻은 다 써서 없어진다는 뜻으로, 진(盡)은 여기서도 다하다라는 뜻이에요!')">소진</div>
+        <div class="ext-opt" id="eo1-0" onclick="pickExt(1,0,true,'기진맥진의 뜻은 기운이 다 빠진다는 뜻으로, 진(盡)은 다하다라는 뜻이에요!')">기진맥진</div>
+        <div class="ext-opt" id="eo1-1" onclick="pickExt(1,1,false,'진짜의 진(眞)은 참되다는 뜻이에요. 다할 진(盡)이 아니에요!')">진짜</div>
+        <div class="ext-opt" id="eo1-2" onclick="pickExt(1,2,true,'소진의 뜻은 다 써서 없어진다는 뜻으로, 진(盡)은 여기서도 다하다라는 뜻이에요!')">소진</div>
+        <div class="ext-opt" id="eo1-3" onclick="pickExt(1,3,false,'진실의 진(眞)도 참되다는 뜻이에요. 다할 진(盡)이 아니에요!')">진실</div>
       </div>
       <div class="ext-feedback" id="ef1"></div>
     </div>
@@ -1452,6 +1550,22 @@ function goPage(n) {
   document.getElementById('page' + n).classList.add('active');
   updateProgress(n);
   window.scrollTo(0, 0);
+
+  if (n === 5) showTriviaToastOnce();
+}
+
+let triviaToastShown = false;
+function showTriviaToastOnce() {
+  if (triviaToastShown) return;
+  const hasTrivia = document.querySelector('.hanja-trivia');
+  if (!hasTrivia) return;
+  triviaToastShown = true;
+  const toast = document.getElementById('triviaToast');
+  if (!toast) return;
+  setTimeout(() => {
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3200);
+  }, 250);
 }
 
 function goComplete() {
@@ -1659,6 +1773,41 @@ document.querySelectorAll('.drop-slot').forEach(slot => {
 
 }); // end window.load
 
+// ── 어휘 확장 한자 상식 카드 클릭 시 읽어주기 ──
+async function speakNote(el) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  document.querySelectorAll('.hanja-trivia.speaking').forEach(n => n.classList.remove('speaking'));
+
+  const clone = el.cloneNode(true);
+  const iconEl = clone.querySelector('.note-speak-icon');
+  if (iconEl) iconEl.remove();
+  const text = clone.textContent.replace(/\s+/g, ' ').trim();
+
+  el.classList.add('speaking');
+
+  let voices = window.speechSynthesis.getVoices();
+  if (voices.length === 0) {
+    await new Promise(resolve => {
+      window.speechSynthesis.onvoiceschanged = () => resolve();
+      setTimeout(resolve, 300);
+    });
+    voices = window.speechSynthesis.getVoices();
+  }
+  const koVoices = voices.filter(v => /ko|kr/i.test(v.lang));
+  const narrVoice = koVoices.find(v => /female|yuna|sora|미|여|나|지윤/i.test(v.name)) || koVoices[0] || null;
+
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = 'ko-KR';
+  utter.rate = 0.92;
+  utter.pitch = 1.05;
+  if (narrVoice) utter.voice = narrVoice;
+  utter.onend = () => el.classList.remove('speaking');
+  utter.onerror = () => el.classList.remove('speaking');
+
+  window.speechSynthesis.speak(utter);
+}
+
 function checkP1() {
   const correct = slots[0]==='고' && slots[1]==='진' && slots[2]==='감' && slots[3]==='래';
   if (correct) {
@@ -1801,7 +1950,7 @@ function pickSituation(idx) {
 // 각 섹션별 정답 인덱스
 const extCorrect = [
   [1, 3],       // 苦: 고생, 고통
-  [1, 3],       // 盡: 기진맥진, 소진
+  [0, 2],       // 盡: 기진맥진, 소진
   [0, 2],       // 甘: 감미료, 감언이설
   [0, 2]        // 來: 왕래, 도래
 ];
