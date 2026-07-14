@@ -2125,7 +2125,15 @@ function getVoices() {
   });
 }
 
-async function toggleTTS() {
+function pickVoices() {
+  const allVoices = window.speechSynthesis.getVoices();
+  const koVoices = allVoices.filter(v => v.lang.startsWith('ko'));
+  const narrVoice  = koVoices.find(v => /female|yuna|sora|미|여|나|지윤/i.test(v.name)) || koVoices[0] || null;
+  const speechVoice = koVoices.find(v => /male|junho|민|남|준|철|현/i.test(v.name) && v !== narrVoice) || null;
+  return { narrVoice, speechVoice };
+}
+
+function toggleTTS() {
   const btn = document.getElementById('ttsBtn');
   if (ttsPlaying) {
     window.speechSynthesis.cancel();
@@ -2136,16 +2144,13 @@ async function toggleTTS() {
     return;
   }
 
-  const allVoices = await getVoices();
-  const koVoices = allVoices.filter(v => v.lang.startsWith('ko'));
-  let narrVoice  = koVoices.find(v => /female|yuna|sora|미|여|나|지윤/i.test(v.name)) || koVoices[0] || null;
-  let speechVoice = koVoices.find(v => /male|junho|민|남|준|철|현/i.test(v.name) && v !== narrVoice) || null;
-
   ttsPlaying = true;
   ttsCurrentIdx = 0;
   btn.textContent = '⏹ 멈추기';
   btn.style.background = '#CC3333';
 
+  // 버튼을 누른 그 순간(제스처) 안에서 바로 speak()를 호출해야
+  // 삼성 인터넷 등 일부 안드로이드 브라우저에서 재생이 막히지 않아요.
   function speakNext() {
     if (!ttsPlaying || ttsCurrentIdx >= storyScript.length) {
       ttsPlaying = false;
@@ -2154,6 +2159,7 @@ async function toggleTTS() {
       btn.style.background = 'var(--primary)';
       return;
     }
+    const { narrVoice, speechVoice } = pickVoices();
     const item = storyScript[ttsCurrentIdx];
     const utter = new SpeechSynthesisUtterance(item.text);
     utter.lang = 'ko-KR';
