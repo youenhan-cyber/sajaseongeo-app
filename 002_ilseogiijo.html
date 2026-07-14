@@ -2118,7 +2118,10 @@ function getVoices() {
   return new Promise(resolve => {
     let v = window.speechSynthesis.getVoices();
     if (v.length) { resolve(v); return; }
-    window.speechSynthesis.onvoiceschanged = () => resolve(window.speechSynthesis.getVoices());
+    let done = false;
+    const finish = () => { if (done) return; done = true; resolve(window.speechSynthesis.getVoices()); };
+    window.speechSynthesis.onvoiceschanged = finish;
+    setTimeout(finish, 300); // 일부 안드로이드/삼성 브라우저는 onvoiceschanged가 안 뜨는 경우가 있어 안전장치 추가
   });
 }
 
