@@ -931,10 +931,32 @@
     height: 1px;
     background: var(--border);
     margin: 16px 0;
-  }
+  }.kakao-banner {
+  display:none; position:relative; z-index:3;
+  background: linear-gradient(135deg,#FFD84D,#FFC107); color:#3A2E00;
+  padding: 10px 40px 10px 14px; font-size:12.5px; font-weight:700; line-height:1.5;
+}
+.kakao-banner.show { display:block; }
+.kakao-banner b { text-decoration: underline; }
+.kakao-banner .kb-close {
+  position:absolute; right:10px; top:50%; transform:translateY(-50%);
+  background:rgba(0,0,0,0.12); border:none; border-radius:50%; width:22px; height:22px;
+  font-size:13px; line-height:22px; color:#3A2E00; cursor:pointer;
+}
+.kb-open-chrome {
+  display:block; margin-top:8px; background:#1E3A5F; color:white; border:none;
+  border-radius:10px; padding:9px 14px; font-size:13px; font-weight:800;
+  font-family:'Noto Sans KR',sans-serif; cursor:pointer;
+}
 </style>
 </head>
 <body>
+
+<div class="kakao-banner" id="kakaoBanner">
+  🔔 소리(읽어주기/녹음)가 안 들리면 아래 버튼을 눌러주세요!
+  <button class="kb-open-chrome" onclick="openInChrome()">🌐 크롬으로 열기</button>
+  <button class="kb-close" onclick="closeKakaoBanner()">✕</button>
+</div>
 
 <header>
   <div class="label">오늘의 사자성어</div>
@@ -2229,6 +2251,24 @@ function pickConfirm(el, correct) {
     hint.textContent = '🎙️ 버튼을 눌러 목소리를 녹음해보세요';
   }
 })();
+
+function checkKakaoInApp(){
+  const ua = navigator.userAgent || '';
+  const isAndroid = /android/i.test(ua);
+  if (isAndroid && sessionStorage.getItem('kakaoBannerClosed') !== '1') {
+    document.getElementById('kakaoBanner').classList.add('show');
+  }
+}
+function closeKakaoBanner(){
+  document.getElementById('kakaoBanner').classList.remove('show');
+  sessionStorage.setItem('kakaoBannerClosed', '1');
+}
+function openInChrome(){
+  const withoutScheme = location.href.replace(/^https?:\/\//, '');
+  const intentUrl = 'intent://' + withoutScheme + '#Intent;scheme=https;package=com.android.chrome;end';
+  location.href = intentUrl;
+}
+checkKakaoInApp();
 </script>
 </body>
 </html>
